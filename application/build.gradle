@@ -3,6 +3,8 @@ apply plugin: "idea"
 apply plugin: "spring-boot"
 apply plugin: "io.spring.dependency-management"
 apply plugin: "war"
+apply plugin: "groovy"
+apply plugin: "maven-publish"
 
 buildscript {
     repositories {
@@ -14,20 +16,10 @@ buildscript {
             }
         }
     }
-    
+
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE") 
         classpath("io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE")
-    }
-}
-
-repositories {
-    maven {
-        url("$artifactoryLibraryRepo")
-        credentials {
-            username = "$artifactoryUsername"
-            password = "$artifactoryPassword"
-        }
     }
 }
 
@@ -43,4 +35,44 @@ dependencies {
     compile ("org.springframework.boot:spring-boot-starter-web")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
+}
+
+publishing {
+    repositories {
+        maven {
+            name("libs-release-local")
+            url("$artifactoryReleaseRepo")
+
+            credentials {
+                username = "$artifactoryUsername"
+                password = "$artifactoryPassword"
+            }
+        }
+    }
+
+    publications {
+        plugin(MavenPublication) {
+            from(components.java)
+            groupId("$group");
+            artifactId("${project.name}")
+            version("$project.version")
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode("name", "${project.name}")
+                root.appendNode("description", "${project.name}")
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'The Apache Software License, Version 2.0')
+                license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                license.appendNode('distribution', 'repo')
+
+                def developer = root.appendNode("developers").appendNode("developer")
+                developer.appendNode("id", "khainguyentuong")
+                developer.appendNode("name", "Khai Nguyen")
+                developer.appendNode("email", "khainguyentuong@gmail.com")
+            }
+        }
+    }
 }

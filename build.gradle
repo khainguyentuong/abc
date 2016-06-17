@@ -2,13 +2,37 @@ task wrapper(type: Wrapper) {
     gradleVersion = "2.14"
 }
 
-apply plugin: "idea"
-apply plugin: "project-report"
-
 buildscript {
+	repositories {
+		maven {
+			url("$artifactoryLibraryRepo")
+			credentials {
+				username = "$artifactoryUsername"
+				password = "$artifactoryPassword"
+			}
+		}
+	}
+
 	dependencies {
 		classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
 	}	
+}
+
+allprojects {
+    apply plugin: "idea"
+    apply plugin: "project-report"
+
+    repositories {
+        maven {
+            url("$artifactoryLibraryRepo")
+            credentials {
+                username = "$artifactoryUsername"
+                password = "$artifactoryPassword"
+            }
+        }
+    }
+
+    project.version = "$majorReleaseId.$minorReleaseId.$buildId"
 }
 
 subprojects {

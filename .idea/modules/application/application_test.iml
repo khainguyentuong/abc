@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":application:test" external.linked.project.path="$MODULE_DIR$/../../../application" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="flywaydb" external.system.module.type="sourceSet" external.system.module.version="0.1" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":application:test" external.linked.project.path="$MODULE_DIR$/../../../application" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="com.khainguyentuong" external.system.module.type="sourceSet" external.system.module.version="1.0.0" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output-test url="file://$MODULE_DIR$/../../../application/build/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../application/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../application/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../application/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../application/src/test/resources" type="java-test-resource" />
     </content>
