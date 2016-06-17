@@ -1,3 +1,32 @@
 task wrapper(type: Wrapper) {
     gradleVersion = "2.14"
 }
+
+apply plugin: "idea"
+apply plugin: "project-report"
+
+buildscript {
+	dependencies {
+		classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
+	}	
+}
+
+subprojects {
+    apply plugin: "org.sonarqube"
+
+    sonarqube {
+		properties {
+			property "sonar.host.url", "$sonarUrl"
+			property "sonar.login", "$sonarUsername"
+			property "sonar.password", "$sonarPassword"
+			property "sonar.projectName", "${rootProject.name}:${project.name}"
+			property "sonar.projectKey", "${rootProject.name}:${project.name}"
+			property "sonar.links.ci", "$ciUrl"
+			property "sonar.links.scm", "$scmUrl"
+			property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
+			property "sonar.java.coveragePlugin", "jacoco"			
+		}
+	}
+	
+    task allDeps(type: DependencyReportTask) {}
+}
