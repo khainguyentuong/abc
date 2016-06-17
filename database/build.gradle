@@ -1,0 +1,89 @@
+apply plugin: "org.flywaydb.flyway"
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: "maven-publish"
+
+buildscript {
+    repositories {
+        maven {
+            url("$artifactoryLibraryRepo")
+            credentials {
+                username = "$artifactoryUsername"
+                password = "$artifactoryPassword"
+            }
+        }
+    }
+
+    dependencies {
+        classpath("mysql:mysql-connector-java:5.1.38")
+        classpath("org.flywaydb:flyway-gradle-plugin:4.0.2")
+    }
+}
+
+flyway {
+    url = "jdbc:mysql://192.168.99.100:3306"
+    user = "$databaseUsername"
+    password = "$databasePassword"
+    schemas = ["person"]
+}
+
+repositories {
+    maven {
+        url("$artifactoryLibraryRepo")
+        credentials {
+            username = "$artifactoryUsername"
+            password = "$artifactoryPassword"
+        }
+    }
+}
+
+dependencies {
+    compile("org.flywaydb:flyway-core:4.0.2")
+    compile("org.codehaus.groovy:groovy-all:2.3.11")
+    runtime("mysql:mysql-connector-java:5.1.38")
+    testCompile("junit:junit:4.11")
+}
+
+task copyLibs(type: Copy) {
+    into("$buildDir/libs")
+    from(configurations.compile)
+    from(configurations.runtime)
+}
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.java
+            artifactId("flywaydb-migrate-plugin")
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode("name", "Flyway plugin")
+                root.appendNode("description", "Plugin for managing database migration.")
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'The Apache Software License, Version 2.0')
+                license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+                license.appendNode('distribution', 'repo')
+
+                def developer = root.appendNode("developers").appendNode("developer")
+                developer.appendNode("id", "khainguyentuong")
+                developer.appendNode("name", "Khai Nguyen")
+                developer.appendNode("email", "khainguyentuong@gmail.com")
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name("libs-release-local")
+            url("$artifactoryReleaseRepo")
+
+            credentials {
+                username = "$artifactoryUsername"
+                password = "$artifactoryPassword"
+            }
+        }
+    }
+}

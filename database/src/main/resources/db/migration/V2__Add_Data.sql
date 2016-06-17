@@ -1,0 +1,2 @@
+insert into person (name, email, password, mobile) values ('Khai Nguyen', 'khainguyentuong@gmail.com', 'Khoan2008', '(111) 111-1111');
+insert into person (name, email, password, mobile) values ('Khoan Nguyen', 'khoannguyentuong@gmail.com', 'Khoan2008', '(222) 222-2222');
