@@ -32,6 +32,10 @@ allprojects {
         }
     }
 
+    if ("$System.env.BUILD_NUMBER") {
+        buildId = "$System.env.BUILD_NUMBER"
+    }
+
     project.version = "$majorReleaseId.$minorReleaseId.$buildId"
 }
 
@@ -45,8 +49,8 @@ subprojects {
 			property "sonar.password", "$sonarPassword"
 			property "sonar.projectName", "${rootProject.name}:${project.name}"
 			property "sonar.projectKey", "${rootProject.name}:${project.name}"
-			property "sonar.links.ci", "$ciUrl"
-			property "sonar.links.scm", "$scmUrl"
+			property "sonar.links.ci", "$System.env.BUILD_URL"
+			property "sonar.links.scm", "$System.env.GIT_URL"
 			property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
 			property "sonar.java.coveragePlugin", "jacoco"			
 		}
@@ -54,3 +58,5 @@ subprojects {
 	
     task allDeps(type: DependencyReportTask) {}
 }
+
+defaultTasks "clean", "check", "war", "publish" , "sonarqube"
