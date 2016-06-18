@@ -14,7 +14,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath "org.sonarqube.gradle:gradle-sonarqube-plugin:1.1"
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1"
 	}	
 }
 
@@ -52,7 +52,7 @@ subprojects {
 			property "sonar.links.ci", "$System.env.BUILD_URL"
 			property "sonar.links.scm", "$System.env.GIT_URL"
 			property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
-			property "sonar.java.coveragePlugin", "jacoco"			
+			property "sonar.java.coveragePlugin", "jacoco"
 		}
 	}
 	
