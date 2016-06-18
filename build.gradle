@@ -48,7 +48,7 @@ subprojects {
 			property "sonar.login", "$sonarUsername"
 			property "sonar.password", "$sonarPassword"
 			property "sonar.projectName", "$applicationName-${project.name}"
-			property "sonar.projectKey", "$group.${rootProject.name}:${project.name}"
+			property "sonar.projectKey", "$group.$applicationName:${project.name}"
 			property "sonar.links.ci", "$System.env.BUILD_URL"
 			property "sonar.links.scm", "$System.env.GIT_URL"
 			property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
