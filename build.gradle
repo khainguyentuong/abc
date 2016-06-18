@@ -32,11 +32,10 @@ allprojects {
         }
     }
 
-    if ("$System.env.BUILD_NUMBER") {
+    if ("$System.env.BUILD_NUMBER" != "null") {
         buildId = "$System.env.BUILD_NUMBER"
     }
 
-	rootProject.name = "$projectName"
     project.version = "$majorReleaseId.$minorReleaseId.$buildId"
 }
 
@@ -48,7 +47,7 @@ subprojects {
 			property "sonar.host.url", "$sonarUrl"
 			property "sonar.login", "$sonarUsername"
 			property "sonar.password", "$sonarPassword"
-			property "sonar.projectName", "${rootProject.name}-${project.name}"
+			property "sonar.projectName", "$applicationName-${project.name}"
 			property "sonar.projectKey", "$group.${rootProject.name}:${project.name}"
 			property "sonar.links.ci", "$System.env.BUILD_URL"
 			property "sonar.links.scm", "$System.env.GIT_URL"
